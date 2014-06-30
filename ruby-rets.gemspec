@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.homepage    = "http://github.com/Placester/ruby-rets"
   s.summary     = "RETS 1.x library for Ruby"
   s.description = "Gem for pulling data from RETS (http://rets.org) servers."
-  
+
   s.license     = "MIT"
 
   s.required_rubygems_version = ">= 1.3.6"

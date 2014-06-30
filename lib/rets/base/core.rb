@@ -1,4 +1,5 @@
-# For more information on what the possible values of fields that are passed to the RETS server can be, see {http://www.rets.org/documentation}.
+# For more information on what the possible values of fields that are passed to
+# the RETS server can be, see {http://www.rets.org/documentation}.
 module RETS
   module Base
     class Core
