@@ -1,8 +1,8 @@
-path = File.expand_path("../../", __FILE__)
-require "#{path}/lib/ruby-rets.rb"
+require 'ruby-rets'
 
-Dir["#{path}/spec/support/*.rb"].each {|file| require file}
+Dir["#{Bundler.root}/spec/support/*.rb"].each { |file| require file }
 
-RSpec.configure do |c|
-  c.mock_with :rspec
+RSpec.configure do |config|
+  config.order = 'random'
+  config.mock_with :rspec
 end
