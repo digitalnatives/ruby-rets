@@ -6,7 +6,10 @@ Compability
 -
 Tested against Ruby 1.9.3, 2.0.0, RBX and JRuby, build history is available [here](http://travis-ci.org/Placester/ruby-rets).
 
-<img src="https://secure.travis-ci.org/Placester/ruby-rets.png?branch=master&.png"/>
+Origin:
+[![Origin Status](https://travis-ci.org/Placester/ruby-rets.svg?branch=master)](https://travis-ci.org/digitalnatives/ruby-rets)
+Fork:
+[![Fork Status](https://travis-ci.org/digitalnatives/ruby-rets.svg)](https://travis-ci.org/digitalnatives/ruby-rets)
 
 Documentation
 -
