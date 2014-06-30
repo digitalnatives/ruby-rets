@@ -1,17 +1,9 @@
 require "spec_helper"
 
 describe RETS::Base::Core do
+  include Support::LoadResponse
   before :all do
     @uri = URI("http://foobar.com/api/page")
-    @response_path = File.expand_path("../../../responses", __FILE__)
-  end
-
-  # Make sure that \r\n is always used as that's what we get back from HTTP
-  def load_file(dir, file)
-    body = File.read(File.join(@response_path, dir, "#{file}.txt"))
-    body.gsub!("\r", "")
-    body.gsub!("\n", "\r\n")
-    body
   end
 
   it "attempts to logout" do
@@ -28,7 +20,7 @@ describe RETS::Base::Core do
 
   context "get_metadata" do
     it "successfully loads" do
-      RETS::StreamHTTP.stub(:new).and_return(StringIO.new(load_file("get_metadata", "success")))
+      RETS::StreamHTTP.stub(:new).and_return(load_response_stream("get_metadata", "success"))
 
       http = mock("HTTP")
       http.should_receive(:request).with(hash_including(:url => @uri, :read_timeout => nil, :params => {:Format => :COMPACT, :Type => "Foo", :ID => "*"})).and_yield(nil)
@@ -55,7 +47,7 @@ describe RETS::Base::Core do
     end
 
     it "raises an error" do
-      RETS::StreamHTTP.stub(:new).and_return(StringIO.new(load_file("get_metadata", "error")))
+      RETS::StreamHTTP.stub(:new).and_return(load_response_stream("get_metadata", "error"))
 
       http = mock("HTTP")
       http.should_receive(:request).with(anything).and_yield(nil)
@@ -72,7 +64,7 @@ describe RETS::Base::Core do
   context "get_object" do
     context "multipart" do
       it "successfully loads full data" do
-        body = load_file("get_object", "multipart_success")
+        body = load_response("get_object", "multipart_success")
 
         response = mock("Response")
         response.stub(:read_body).and_return(body)
@@ -103,7 +95,7 @@ describe RETS::Base::Core do
       end
 
       it "successfully loads locations" do
-        body = load_file("get_object", "multipart_location_success")
+        body = load_response("get_object", "multipart_location_success")
 
         response = mock("Response")
         response.stub(:read_body).and_return(body)
@@ -130,7 +122,7 @@ describe RETS::Base::Core do
       end
 
       it "raises an error" do
-        body = load_file("get_object", "multipart_error")
+        body = load_response("get_object", "multipart_error")
 
         response = mock("Response")
         response.stub(:read_body).and_return(body)
@@ -155,7 +147,7 @@ describe RETS::Base::Core do
       end
 
       it "raises an error" do
-        body = load_file("get_object", "multipart_raprets_error")
+        body = load_response("get_object", "multipart_raprets_error")
 
         response = mock("Response")
         response.stub(:read_body).and_return(body)
@@ -178,7 +170,7 @@ describe RETS::Base::Core do
 
     context "without multipart" do
       it "successfully loads data" do
-        body = load_file("get_object", "single_success")
+        body = load_response("get_object", "single_success")
 
         response = mock("Response")
         response.stub(:read_body).and_return(body)
@@ -200,7 +192,7 @@ describe RETS::Base::Core do
       end
 
       it "successfully loads a single location" do
-        body = load_file("get_object", "single_location_success")
+        body = load_response("get_object", "single_location_success")
 
         response = mock("Response")
         response.stub(:read_body).and_return(body)
@@ -221,7 +213,7 @@ describe RETS::Base::Core do
       end
 
       it "raises an error" do
-        body = load_file("get_object", "single_error")
+        body = load_response("get_object", "single_error")
 
         response = mock("Response")
         response.stub(:read_body).and_return(body)
@@ -245,7 +237,7 @@ describe RETS::Base::Core do
 
   context "search" do
     it "successfully loads data" do
-      RETS::StreamHTTP.stub(:new).and_return(StringIO.new(load_file("search", "success")))
+      RETS::StreamHTTP.stub(:new).and_return(load_response_stream("search", "success"))
 
       http = mock("HTTP")
       http.should_receive(:request).with(hash_including(:url => @uri, :params => {:SearchType => "Property", :QueryType => "DMQL2", :Format => "COMPACT-DECODED", :Class => "RES", :Limit => 5, :Offset => 10, :RestrictedIndicator => "####", :Select => "A,B,C", :StandardNames => 1, :Count => 1, :Query => "(FOO=BAR)"})).and_yield(nil)
@@ -264,9 +256,8 @@ describe RETS::Base::Core do
       data[1].should == {"BATHS" => "3.000000", "BATHS_FULL" => "2", "BATHS_HALF" => "1", "BEDROOMS" => "", "STREET_NAME" => "FOO STREET"}
     end
 
-
     it "raises an error" do
-      RETS::StreamHTTP.stub(:new).and_return(StringIO.new(load_file("search", "error")))
+      RETS::StreamHTTP.stub(:new).and_return(load_response_stream("search", "error"))
 
       http = mock("HTTP")
       http.should_receive(:request).with(anything).and_yield(nil)
