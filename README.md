@@ -1,3 +1,9 @@
+Deprecation notice
+===
+
+This repository is not maintained.
+You may want to look on the original repository: https://github.com/dennis1600/ruby-rets
+
 Overview
 ===
 Simplifies the process of dealing with RETS servers. Without having to worry about the various authentication methods or edge cases associated with dealing with RETS. Should work against all 1.x implementations.
